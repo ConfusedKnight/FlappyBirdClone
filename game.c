@@ -7,12 +7,13 @@
 int change_top[3];
 int change_bot[3];
 
+
 void generate_hole(int walltype, int i){
 
   switch (walltype) {   
     case 1:
       change_top[i] = 300;
-      change_bot[i] = 470;
+      change_bot[i] = 480;
       break;
 
     case 2:
@@ -66,7 +67,17 @@ int get_random_num(){
 
 }
 
+void free_mem(struct Character* bird, struct Wall** walls, void* bg_img){
+  free(bird);
+  free(bg_img);
+
+  for(int i=0; i<3; i++){
+    free(walls[i]);
+  }
+}
+
 int main(){
+
 
   srand(time(NULL));
 
@@ -128,6 +139,14 @@ int main(){
 
   initwindow(650,700,"Flappy Bird");
 
+  //background imgage
+  void *bg_img;
+  int bg_size = imagesize(0,0,getmaxx(), getmaxy());
+  bg_img = malloc(bg_size);
+
+  readimagefile("sky8bit.bmp",0,0,getmaxx(),getmaxy());
+  getimage(0,0,getmaxx(), getmaxy(), bg_img);
+
   setfillstyle(SOLID_FILL, WHITE);
 
   setcolor(WHITE);
@@ -140,8 +159,9 @@ int main(){
     setvisualpage(1-page);
     cleardevice();
 
+    putimage(0, 0, bg_img, COPY_PUT);
 
-    setfillstyle(SOLID_FILL, YELLOW);
+    setfillstyle(SOLID_FILL, RED);
     setcolor(WHITE);
 
     rectangle(bird->left,bird->top,bird->right,bird->bottom);
@@ -245,18 +265,21 @@ int main(){
         (
           (bird->left + 25 >= top_wall_left[i]) &&
           (bird->left <= top_wall_left[i] + 50) &&
-          (bird->top+ 25 >= top_wall_bottom[i]) &&
+          (bird->top+ 25 >= top_wall_bottom[i]-10) &&
           (bird->bottom <= top_wall_top[i] + change_top[i]) 
         ) || 
         (
           (bird->left + 25 >= bot_wall_left[i]) &&
           (bird->left <= bot_wall_left[i] + 50) &&
-          (bird->top + 25 >= bot_wall_top[i]) &&
+          (bird->top + 25 >= bot_wall_top[i]+27) &&
           (bird->bottom <= bot_wall_bottom[i] + change_bot[i]) 
         )
       )
       {
         game_end = 1;
+        page = 1 - page;
+        delay(16);
+        free_mem(bird, walls, bg_img);
         return 0;
       }
     }
@@ -267,8 +290,8 @@ int main(){
     }
 
     if(game_end){
+      free_mem(bird, walls, bg_img);
       return 0;
-      break;
     }
 
     delay(16);
@@ -278,6 +301,5 @@ int main(){
   getch();
   closegraph();
   
-
   return 0;
 }
