@@ -200,19 +200,19 @@ int main(){
         bar(walls[i]->left, bot_wall_top[i], bot_wall_right[i], bot_wall_bottom[i]);
       }
 
-      if(walls[0]->left < 0 && walls[0]->right < 650){
+      if(walls[0]->left < 0-50 && walls[0]->right < 650){
         walls[0]->left = wl+300;
         walls[0]->right = wr+300;
         wall_reset[0] = 1;
       }
 
-      if(walls[1]->left < 0 && walls[1]->right < 650){
+      if(walls[1]->left < 0-50 && walls[1]->right < 650){
         walls[1]->left = wl+300;
         walls[1]->right = wr+300;
         wall_reset[1] = 1;
       }
 
-      if(walls[2]->left < 0 && walls[2]->right < 650){
+      if(walls[2]->left < 0-50 && walls[2]->right < 650){
         walls[2]->left = wl+300;
         walls[2]->right = wr+300;
         wall_reset[2] = 1;
