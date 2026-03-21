@@ -86,6 +86,10 @@ int main(){
   int velocity = 1;
   int accleration = 1;
 
+  char score_str[20];
+
+  char score_msg[50] = "SCORE: ";
+
   int score = 0;
 
   int wall_reset[3] = {1,1,1};
@@ -227,6 +231,16 @@ int main(){
 
     }
 
+    //score counting
+    for(int i=0; i<3; i++){
+      if(
+        (top_wall_right[i] == bird->left)  
+      ){
+        score++;
+        wall_reset[i] = 0;
+      }
+    }
+
     if(kbhit()){
       key_input = getch();
 
@@ -286,7 +300,7 @@ int main(){
         page = 1 - page;
         delay(16);
         free_mem(bird, walls, bg_img);
-        printf("score: %d ",score/10);
+        printf("score: %d ",score);
         return 0;
       }
     }
@@ -300,9 +314,15 @@ int main(){
 
     if(game_end){
       free_mem(bird, walls, bg_img);
-      printf("score: %d ",score/10);
+      printf("score: %d ",score);
       return 0;
     }
+
+    snprintf(score_str, sizeof(score_str), "%d", score);
+    snprintf(score_msg, sizeof(score_msg), "score: %s", score_str);
+
+    settextstyle(3, HORIZ_DIR, 4);
+    outtextxy(0, 0, score_msg);
 
     delay(16);
     page = 1 - page;
