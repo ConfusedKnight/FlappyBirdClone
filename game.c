@@ -76,6 +76,14 @@ void free_mem(struct Character* bird, struct Wall** walls, void* bg_img){
   }
 }
 
+void start_menu(){
+  settextstyle(3, HORIZ_DIR, 4);
+  outtextxy(50,350, "PRESS ANY KEY TO START");
+  getch();
+  
+  return;
+}
+
 int main(){
 
 
@@ -160,9 +168,7 @@ int main(){
 
   int page = 0;
 
-  settextstyle(3, HORIZ_DIR, 4);
-  outtextxy(50,350, "PRESS ANY KEY TO START");
-  getch();
+  start_menu();
 
   while(1){
 
