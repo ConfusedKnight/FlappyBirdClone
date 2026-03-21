@@ -88,7 +88,7 @@ int main(){
 
   char score_str[20];
 
-  char score_msg[50] = "SCORE: ";
+  char score_msg[50];
 
   int score = 0;
 
