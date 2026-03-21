@@ -86,6 +86,7 @@ int main(){
   int velocity = 1;
   int accleration = 1;
 
+  int score = 0;
 
   int wall_reset[3] = {1,1,1};
 
@@ -137,6 +138,8 @@ int main(){
   bird->right = 125;
   bird->bottom = 300;
 
+  //NOTE: bird width and height = 25
+
   initwindow(650,700,"Flappy Bird");
 
   //background imgage
@@ -152,6 +155,10 @@ int main(){
   setcolor(WHITE);
 
   int page = 0;
+
+  settextstyle(3, HORIZ_DIR, 4);
+  outtextxy(50,350, "PRESS ANY KEY TO START");
+  getch();
 
   while(1){
 
@@ -220,7 +227,6 @@ int main(){
 
     }
 
-
     if(kbhit()){
       key_input = getch();
 
@@ -280,17 +286,21 @@ int main(){
         page = 1 - page;
         delay(16);
         free_mem(bird, walls, bg_img);
+        printf("score: %d ",score/10);
         return 0;
       }
     }
+
 
     for(int i=0; i<3; i++){
       walls[i]->left -= 5;
       walls[i]->right -= 5;
     }
 
+
     if(game_end){
       free_mem(bird, walls, bg_img);
+      printf("score: %d ",score/10);
       return 0;
     }
 
@@ -298,6 +308,7 @@ int main(){
     page = 1 - page;
   }
 
+  printf("score: %d ",score);
   getch();
   closegraph();
   
