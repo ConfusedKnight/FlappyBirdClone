@@ -170,7 +170,7 @@ int main(){
 
   start_menu();
 
-  while(1){
+  while(true){
 
     setactivepage(page);
     setvisualpage(1-page);
@@ -247,6 +247,7 @@ int main(){
       }
     }
 
+    //user input
     if(kbhit()){
       key_input = getch();
 
@@ -254,6 +255,8 @@ int main(){
 
         case 'q':
           game_end = 1;
+          free_mem(bird, walls, bg_img);
+          printf("score: %d ",score);
           return 0;
           break;
 
