@@ -77,11 +77,40 @@ void free_mem(struct Character* bird, struct Wall** walls, void* bg_img){
 }
 
 void start_menu(){
+
+  char start_msg[] = "PRESS ANY KEY TO START";
+
   settextstyle(3, HORIZ_DIR, 4);
-  outtextxy(50,350, "PRESS ANY KEY TO START");
+  outtextxy(50,350, start_msg);
   getch();
   
   return;
+}
+
+void get_high_score(char* score){
+
+  FILE *fp = fopen("HighScore.txt", "r");
+
+  fgets(score, 30, fp);
+
+  fclose(fp);
+}
+
+void set_high_score(char* score, char* high_score){
+
+  int h_score = atoi(high_score);
+  int curr_score = atoi(score);
+
+  if(curr_score > h_score){
+
+    FILE *fp = fopen("HighScore.txt", "w");
+    fputs(score, fp);
+    fclose(fp);
+
+  }else{
+    return;
+  }
+
 }
 
 int main(){
@@ -95,8 +124,10 @@ int main(){
   int accleration = 1;
 
   char score_str[20];
+  char high_score_str[20];
 
   char score_msg[50];
+  char high_score_msg[50];
 
   int score = 0;
 
@@ -110,6 +141,10 @@ int main(){
   int top_wall_top[3], top_wall_bottom[3], top_wall_left[3], top_wall_right[3];
 
   int bot_wall_top[3], bot_wall_bottom[3], bot_wall_left[3], bot_wall_right[3];
+
+  char high_score[30];
+
+  get_high_score(high_score);
   
   struct Character *bird; 
 
@@ -257,6 +292,8 @@ int main(){
           game_end = 1;
           free_mem(bird, walls, bg_img);
           printf("score: %d ",score);
+          snprintf(score_str, sizeof(score_str), "%d", score);
+          set_high_score(score_str, high_score);
           return 0;
           break;
 
@@ -310,6 +347,8 @@ int main(){
         delay(16);
         free_mem(bird, walls, bg_img);
         printf("score: %d ",score);
+        snprintf(score_str, sizeof(score_str), "%d", score);
+        set_high_score(score_str, high_score);
         return 0;
       }
     }
@@ -324,19 +363,27 @@ int main(){
     if(game_end){
       free_mem(bird, walls, bg_img);
       printf("score: %d ",score);
+      snprintf(score_str, sizeof(score_str), "%d", score);
+      set_high_score(score_str, high_score);
       return 0;
     }
 
     snprintf(score_str, sizeof(score_str), "%d", score);
     snprintf(score_msg, sizeof(score_msg), "score: %s", score_str);
 
+    snprintf(high_score_msg, sizeof(high_score_msg), "High Score: %s", high_score);
+
     settextstyle(3, HORIZ_DIR, 4);
     outtextxy(0, 0, score_msg);
+
+    settextstyle(3, HORIZ_DIR, 4);
+    outtextxy(405, 0, high_score_msg);
 
     delay(16);
     page = 1 - page;
   }
 
+  set_high_score(score_str, high_score);
   printf("score: %d ",score);
   getch();
   closegraph();
